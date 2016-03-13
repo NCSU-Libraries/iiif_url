@@ -3,7 +3,7 @@ require 'test_helper'
 class IiifUrlTest < Minitest::Test
 
   def test_parsing_simple_url
-    options = IiifUrl.parse("http://example.org/prefix/abc/full/full/0/default.png")
+    params = IiifUrl.parse("http://example.org/prefix/abc/full/full/0/default.png")
     expected = {
       identifier: 'abc',
       region: "full",
@@ -12,11 +12,11 @@ class IiifUrlTest < Minitest::Test
       quality: 'default',
       format: 'png'
     }
-    assert_equal expected, options
+    assert_equal expected, params
   end
 
   def test_parsing_simple_path_with_identifier
-    options = IiifUrl.parse("/abc/full/full/0/default.png")
+    params = IiifUrl.parse("/abc/full/full/0/default.png")
     expected = {
       identifier: 'abc',
       region: "full",
@@ -25,11 +25,11 @@ class IiifUrlTest < Minitest::Test
       quality: 'default',
       format: 'png'
     }
-    assert_equal expected, options
+    assert_equal expected, params
   end
 
   def test_parsing_simple_path_without_identifier
-    options = IiifUrl.parse("/full/full/0/default.png")
+    params = IiifUrl.parse("/full/full/0/default.png")
     expected = {
       identifier: nil,
       region: "full",
@@ -38,11 +38,11 @@ class IiifUrlTest < Minitest::Test
       quality: 'default',
       format: 'png'
     }
-    assert_equal expected, options
+    assert_equal expected, params
   end
 
   def test_parsing_parameterized_path_without_identifier
-    options = IiifUrl.parse("/0,100,200,300/75,/0/default.jpg")
+    params = IiifUrl.parse("/0,100,200,300/75,/0/default.jpg")
     expected = {
       identifier: nil,
       region: {x:0, y:100, w: 200, h: 300},
@@ -51,11 +51,11 @@ class IiifUrlTest < Minitest::Test
       quality: "default",
       format: "jpg"
     }
-    assert_equal expected, options
+    assert_equal expected, params
   end
 
   def test_parsing_pcts
-    options = IiifUrl.parse("/pct:0,100,200,300/pct:75/0/default.jpg")
+    params = IiifUrl.parse("/pct:0,100,200,300/pct:75/0/default.jpg")
     expected = {
       identifier: nil,
       region: {pctx:0, pcty:100, pctw: 200, pcth: 300},
@@ -64,7 +64,7 @@ class IiifUrlTest < Minitest::Test
       quality: "default",
       format: "jpg"
     }
-    assert_equal expected, options
+    assert_equal expected, params
   end
 
 end

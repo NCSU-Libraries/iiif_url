@@ -4,7 +4,7 @@ class IiifBaseUrlTest < Minitest::Test
 
   def test_setting_constant
     IiifUrl.set_base_url("http://example.edu/prefix")
-    url = IiifUrl.from_options(identifier: 'abc')
+    url = IiifUrl.from_params(identifier: 'abc')
     expected = "http://example.edu/prefix/abc/full/full/0/default.jpg"
     assert_equal expected, url
     IiifUrl.set_base_url("")
@@ -12,8 +12,8 @@ class IiifBaseUrlTest < Minitest::Test
 
   def test_overriding_constant_with_false
     IiifUrl.set_base_url("http://example.edu/prefix")
-    options = {identifier: 'abc', base_url: false}
-    url = IiifUrl.from_options(options)
+    params = {identifier: 'abc', base_url: false}
+    url = IiifUrl.from_params(params)
     expected = "/abc/full/full/0/default.jpg"
     assert_equal expected, url
     IiifUrl.set_base_url("")
@@ -21,8 +21,8 @@ class IiifBaseUrlTest < Minitest::Test
 
   def test_overriding_constant_with_string
     IiifUrl.set_base_url("http://example.edu/prefix")
-    options = {identifier: 'abc', base_url: "http://example.org"}
-    url = IiifUrl.from_options(options)
+    params = {identifier: 'abc', base_url: "http://example.org"}
+    url = IiifUrl.from_params(params)
     expected = "http://example.org/abc/full/full/0/default.jpg"
     assert_equal expected, url
     IiifUrl.set_base_url("")

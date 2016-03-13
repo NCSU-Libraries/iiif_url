@@ -20,11 +20,11 @@ Or install it yourself as:
 
 ## Usage
 
-Here's the simplest case of creating a IIIF URL with all options. By default only the path is given without the scheme, server, port, or IIIF prefix.
+Here's the simplest case of creating a IIIF URL with all params. By default only the path is given without the scheme, server, port, or IIIF prefix.
 
 ```ruby
 iiif_base_url = "http://example.edu/prefix"
-options = {
+params = {
   identifier: 'abc',
   region: 'full',
   size: 'full',
@@ -32,17 +32,17 @@ options = {
   quality: 'default',
   format: 'jpg'
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "/abc/full/full/0/default.jpg"
 full_url = File.join(iiif_base_url, url)
 # => "http://example.edu/prefix/full/full/0/default.jpg"
 ```
 
-If the base URL is set then it will form a full url automatically:
+If the base URL is set then it will form a full URL automatically:
 
 ```ruby
 IiifUrl.set_base_url("http://example.edu/prefix")
-options = {
+params = {
   identifier: 'abc',
   region: 'full',
   size: 'full',
@@ -50,15 +50,15 @@ options = {
   quality: 'default',
   format: 'jpg'
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "http://example.edu/prefix/abc/full/full/0/default.jpg"
 ```
 
-You can also pass in the base URL in with the options, which will override any value set for the base URL.
+You can also pass in the base URL in with the params, which will override any value set for the base URL.
 
 ```ruby
 IiifUrl.set_base_url("http://example.edu/prefix")
-options = {
+params = {
   identifier: 'abc',
   base_url: "http://example.org",
   region: 'full',
@@ -67,7 +67,7 @@ options = {
   quality: 'default',
   format: 'jpg'
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "http://example.org/abc/full/full/0/default.jpg"
 ```
 
@@ -75,7 +75,7 @@ If the base URL is set you can prevent it being used and just return the path po
 
 ```ruby
 IiifUrl.set_base_url("http://example.edu/prefix")
-options = {
+params = {
   identifier: 'abc',
   base_url: false,
   region: 'full',
@@ -84,14 +84,14 @@ options = {
   quality: 'default',
   format: 'jpg'
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "/abc/full/full/0/default.jpg"
 ```
 
 A more complicated region and size:
 
 ```ruby
-options = {
+params = {
   identifier: 'abc',
   region: {
     x: 0,
@@ -104,14 +104,14 @@ options = {
   quality: 'default',
   format: 'jpg'
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "/abc/0,0,1000,1200/300,/0/default.jpg"
 ```
 
 To use a percent region or percent size, you must prefix the keys like this:
 
 ```ruby
-options = {
+params = {
   identifier: 'abc',
   region: {
     pctx: 10,
@@ -121,28 +121,28 @@ options = {
   },
   size: {pct: 50}
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "/abc/pct:10,10,80,80/pct:50/0/default.jpg"
 ```
 
 If no identifier is passed in, then only the IIIF URL path will be returned:
 
 ```ruby
-options = {
+params = {
   size: {pct: 50}
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "/full/pct:50/0/default.jpg"
 ```
 
 Even if a base_url is given if there is no identifier, then only the IIIF URL path will be returned:
 
 ```ruby
-options = {
+params = {
   base_url: "http://example.org/prefix/",
   size: {pct: 50}
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "/full/pct:50/0/default.jpg"
 ```
 
@@ -161,27 +161,27 @@ You only need to specify values that are different from the defaults. The defaul
 | format     | "jpg"     |
 
 ```ruby
-options = {
+params = {
   identifier: 'abc',
   size: {w: 600}
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "/abc/full/600,/0/default.jpg"
 ```
 
 And without an identifier:
 
 ```ruby
-options = {
+params = {
   size: {w: 600}
 }
-url = IiifUrl.from_options(options)
+url = IiifUrl.from_params(params)
 # => "/full/600,/0/default.jpg"
 ```
 
 ## Chainable
 
-There may be cases where you do not have all of the options you need so you want to pass around a IiifUrl to add more options.
+There may be cases where you do not have all of the params you need so you want to pass around a IiifUrl to add more params.
 
 ```ruby
 url = IiifUrl.new
@@ -191,7 +191,7 @@ url.to_s
 # => "/100,200,300,300/150,/0/default.png"
 ```
 
-You can also pass in some initial options and then add on others:
+You can also pass in some initial params and then add on others:
 
 ```ruby
 url = IiifUrl.new({size: {w: 100}})
@@ -209,28 +209,28 @@ IIIF URLs are parsed by segments including: region, size, rotation, quality, and
 Simple case for region and size parsed into strings:
 
 ```ruby
-options = IiifUrl.parse("/full/full/0/default.png")
+params = IiifUrl.parse("/full/full/0/default.png")
 # => {region: "full", size: "full", rotation: {degrees: 0, mirror: false}, quality: 'default', format: 'png'}
 ```
 
 With an identifier:
 
 ```ruby
-options = IiifUrl.parse("/abc/full/full/0/default.png")
+params = IiifUrl.parse("/abc/full/full/0/default.png")
 # => {identifier: "abc", region: "full", size: "full", rotation: {degrees: 0, mirror: false}, quality: 'default', format: 'png'}
 ```
 
 Parameterized region and size:
 
 ```ruby
-options = IiifUrl.parse("/0,100,200,300/75,/0/default.jpg")
+params = IiifUrl.parse("/0,100,200,300/75,/0/default.jpg")
 # => {identifier: nil, region: {x:0, y:100, w: 200, h: 300}, size: {w: 75, h: nil}, rotation: {degrees: 0, mirror: false}, quality: "default", format: "jpg" }
 ```
 
 Parse a full URL:
 
 ```ruby
-options = IiifUrl.parse("http://example.org/prefix/abc/0,100,200,300/75,/0/default.jpg")
+params = IiifUrl.parse("http://example.org/prefix/abc/0,100,200,300/75,/0/default.jpg")
 # => {identifier: abc, region: {x:0, y:100, w: 200, h: 300}, size: {w: 75, h: nil}, rotation: {degrees: 0, mirror: false}, quality: "default", format: "jpg" }
 ```
 

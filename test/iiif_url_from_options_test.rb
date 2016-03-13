@@ -5,8 +5,8 @@ class IiifUrlTest < Minitest::Test
     refute_nil ::IiifUrl::VERSION
   end
 
-  def test_creation_of_url_from_string_options
-    options = {
+  def test_creation_of_url_from_string_params
+    params = {
       region: 'full',
       size: 'full',
       rotation: 0,
@@ -14,12 +14,12 @@ class IiifUrlTest < Minitest::Test
       format: 'jpg'
     }
     expected = "/full/full/0/default.jpg"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
   def test_creation_of_url_with_identifier
-    options = {
+    params = {
       identifier: 'abc',
       region: 'full',
       size: 'full',
@@ -28,12 +28,12 @@ class IiifUrlTest < Minitest::Test
       format: 'jpg'
     }
     expected = "/abc/full/full/0/default.jpg"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
-  def test_creation_of_url_from_hash_region_and_size_options
-    options = {
+  def test_creation_of_url_from_hash_region_and_size_params
+    params = {
       region: {
         x: 0,
         y: 0,
@@ -46,12 +46,12 @@ class IiifUrlTest < Minitest::Test
       format: 'jpg'
     }
     expected = "/0,0,1000,1200/300,/0/default.jpg"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
   def test_creation_of_url_from_height_size_option
-    options = {
+    params = {
       region: {
         x: 0,
         y: 0,
@@ -64,12 +64,12 @@ class IiifUrlTest < Minitest::Test
       format: 'jpg'
     }
     expected = "/0,0,1000,1200/,300/0/default.jpg"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
   def test_creation_of_url_from_width_and_height_size_option
-    options = {
+    params = {
       region: "full",
       size: {w: 200, h: 300},
       rotation: 0,
@@ -77,12 +77,12 @@ class IiifUrlTest < Minitest::Test
       format: 'jpg'
     }
     expected = "/full/200,300/0/default.jpg"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
   def test_creation_of_url_from_pct_region
-    options = {
+    params = {
       region: {
         pctx: 0,
         pcty: 0,
@@ -95,12 +95,12 @@ class IiifUrlTest < Minitest::Test
       format: 'jpg'
     }
     expected = "/pct:0,0,1000,1200/full/0/default.jpg"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
   def test_creation_of_url_from_pct_size
-    options = {
+    params = {
       region: "full",
       size: {pct: 25},
       rotation: 0,
@@ -108,12 +108,12 @@ class IiifUrlTest < Minitest::Test
       format: 'jpg'
     }
     expected = "/full/pct:25/0/default.jpg"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
-  def test_creation_of_url_from_rotation_options
-    options = {
+  def test_creation_of_url_from_rotation_params
+    params = {
       region: "full",
       size: "full",
       rotation: {
@@ -124,12 +124,12 @@ class IiifUrlTest < Minitest::Test
       format: 'png'
     }
     expected = "/full/full/180/default.png"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
   def test_mirror_is_false_if_not_passed_in
-    options = {
+    params = {
       region: "full",
       size: "full",
       rotation: { degrees: 180 },
@@ -137,12 +137,12 @@ class IiifUrlTest < Minitest::Test
       format: 'png'
     }
     expected = "/full/full/180/default.png"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
   def test_creation_of_url_from_rotation_with_mirror
-    options = {
+    params = {
       region: "full",
       size: "full",
       rotation: {
@@ -153,31 +153,31 @@ class IiifUrlTest < Minitest::Test
       format: 'png'
     }
     expected = "/full/full/!180/default.png"
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     assert_equal expected, url
   end
 
   def test_creation_of_url_with_defaults
     expected = "/full/full/0/default.jpg"
-    url = IiifUrl.from_options
+    url = IiifUrl.from_params
     assert_equal expected, url
   end
 
   def test_passing_in_base_url
-    options = {
+    params = {
       identifier: 'abc',
       base_url: "http://example.edu/prefix"
     }
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     expected = "http://example.edu/prefix/abc/full/full/0/default.jpg"
     assert_equal expected, url
   end
 
   def test_passing_in_base_url_no_identifier
-    options = {
+    params = {
       base_url: "http://example.edu/prefix"
     }
-    url = IiifUrl.from_options(options)
+    url = IiifUrl.from_params(params)
     expected = "/full/full/0/default.jpg"
     assert_equal expected, url
   end

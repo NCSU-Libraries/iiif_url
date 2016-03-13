@@ -4,57 +4,57 @@ class IiifUrl
 
   @@base_url = ""
 
-  def initialize(options={})
-    @options = options
+  def initialize(params={})
+    @params = params
   end
 
   def identifier(identifier)
-    @options[:identifier] = identifier
+    @params[:identifier] = identifier
     self
   end
 
   def region(region)
-    @options[:region] = region
+    @params[:region] = region
     self
   end
 
   def size(size)
-    @options[:size] = size
+    @params[:size] = size
     self
   end
 
   def rotation(rotation)
-    @options[:rotation] = rotation
+    @params[:rotation] = rotation
     self
   end
 
   def quality(quality)
-    @options[:quality] = quality
+    @params[:quality] = quality
     self
   end
 
   def format(format)
-    @options[:format] = format
+    @params[:format] = format
     self
   end
 
   def to_s
-    IiifUrl.from_options(@options)
+    IiifUrl.from_params(@params)
   end
 
   def self.set_base_url(base_url)
     @@base_url = base_url
   end
 
-  def self.from_options(options={})
-    base_url = options[:base_url]
+  def self.from_params(params={})
+    base_url = params[:base_url]
     if base_url == false
       base_url = ''
     elsif base_url.nil?
       base_url = @@base_url
     end
 
-    region = options[:region] || "full"
+    region = params[:region] || "full"
     if region.is_a? Hash
       if region[:x]
         region = "#{region[:x]},#{region[:y]},#{region[:w]},#{region[:h]}"
@@ -63,7 +63,7 @@ class IiifUrl
       end
     end
 
-    size = options[:size] || "full"
+    size = params[:size] || "full"
     if size.is_a? Hash
       if size[:w] || size[:h]
         size = "#{size[:w]},#{size[:h]}"
@@ -72,7 +72,7 @@ class IiifUrl
       end
     end
 
-    rotation = options[:rotation] || 0
+    rotation = params[:rotation] || 0
     if rotation.is_a? Hash
       if rotation[:mirror]
         rotation = "!#{rotation[:degrees]}"
@@ -81,12 +81,12 @@ class IiifUrl
       end
     end
 
-    quality = options[:quality] || "default"
-    format = options[:format] || "jpg"
+    quality = params[:quality] || "default"
+    format = params[:format] || "jpg"
 
     path = "/#{region}/#{size}/#{rotation}/#{quality}.#{format}"
-    if options[:identifier]
-      File.join(base_url, options[:identifier], path)
+    if params[:identifier]
+      File.join(base_url, params[:identifier], path)
     else
       path
     end

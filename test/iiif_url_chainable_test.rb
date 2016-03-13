@@ -2,7 +2,7 @@ require 'test_helper'
 
 class IiifUrlChainableTest < Minitest::Test
 
-  def test_chainable_options
+  def test_chainable_params
     url = IiifUrl.new
     url.region({x:100, y:200, w: 300, h: 300})
     url.size({w: 150}).format('png')
@@ -17,7 +17,7 @@ class IiifUrlChainableTest < Minitest::Test
     assert_equal expected, url.to_s
   end
 
-  def test_chainable_options_with_initial
+  def test_chainable_params_with_initial
     url = IiifUrl.new({size: {w: 100}})
     url.format('png')
     url.rotation(180)
