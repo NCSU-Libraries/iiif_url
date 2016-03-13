@@ -18,6 +18,20 @@ class IiifUrlTest < Minitest::Test
     assert_equal expected, url
   end
 
+  def test_creation_of_url_with_identifier
+    options = {
+      identifier: 'abc',
+      region: 'full',
+      size: 'full',
+      rotation: 0,
+      quality: 'default',
+      format: 'jpg'
+    }
+    expected = "/abc/full/full/0/default.jpg"
+    url = IiifUrl.from_options(options)
+    assert_equal expected, url
+  end
+
   def test_creation_of_url_from_hash_region_and_size_options
     options = {
       region: {
@@ -151,10 +165,20 @@ class IiifUrlTest < Minitest::Test
 
   def test_passing_in_base_url
     options = {
+      identifier: 'abc',
       base_url: "http://example.edu/prefix"
     }
     url = IiifUrl.from_options(options)
-    expected = "http://example.edu/prefix/full/full/0/default.jpg"
+    expected = "http://example.edu/prefix/abc/full/full/0/default.jpg"
+    assert_equal expected, url
+  end
+
+  def test_passing_in_base_url_no_identifier
+    options = {
+      base_url: "http://example.edu/prefix"
+    }
+    url = IiifUrl.from_options(options)
+    expected = "/full/full/0/default.jpg"
     assert_equal expected, url
   end
 

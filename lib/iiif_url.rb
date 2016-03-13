@@ -78,10 +78,65 @@ class IiifUrl
 
     quality = options[:quality] || "default"
     format = options[:format] || "jpg"
-    "#{base_url}/#{region}/#{size}/#{rotation}/#{quality}.#{format}"
+
+    path = "/#{region}/#{size}/#{rotation}/#{quality}.#{format}"
+    if options[:identifier]
+      File.join(base_url, options[:identifier], path)
+    else
+      path
+    end
   end
 
   def self.parse(url)
-    #code
+    url_parts = url.split('/')
+    quality_format = url_parts.pop
+    quality, format = quality_format.split('.')
+
+    rotation_string = url_parts.pop
+    rotation = if rotation_string.include?('!')
+      degrees = rotation_string.sub('!', '')
+      {degrees: degrees.to_i, mirror: true}
+    else
+      {degrees: rotation_string.to_i, mirror: false}
+    end
+
+    size_string = url_parts.pop
+    size = if size_string.include?(',')
+      w, h = size_string.split(',')
+      w = w.to_i if !w.nil?
+      h = h.to_i if !h.nil?
+      {w: w, h: h}
+    elsif size_string.include?('pct')
+      pct, size = size_string.split(':')
+      {pct: size.to_f}
+    else
+      size_string
+    end
+
+    region_string = url_parts.pop
+    region = if region_string.include?(',')
+      if region_string.include?('pct')
+        pctx, pcty, pctw, pcth = region_string.split(',')
+        pct, pctx = pctx.split(':')
+        {pctx: pctx.to_f, pcty: pcty.to_f, pctw: pctw.to_f, pcth: pcth.to_f}
+      else
+        x, y, w, h = region_string.split(',')
+        {x: x.to_i, y: y.to_i, w: w.to_i, h: h.to_i}
+      end
+    else
+      region_string
+    end
+
+    identifier = url_parts.pop
+    identifier = nil if identifier == ''
+
+    {
+      identifier: identifier,
+      region: region,
+      size: size,
+      rotation: rotation,
+      quality: quality,
+      format: format
+    }
   end
 end
