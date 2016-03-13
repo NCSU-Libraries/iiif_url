@@ -34,11 +34,11 @@ options = {
 }
 url = IiifUrl.from_options(options)
 # => "/abc/full/full/0/default.jpg"
-full_url = File.join(IIIF_BASE_URL, url)
+full_url = File.join(iiif_base_url, url)
 # => "http://example.edu/prefix/full/full/0/default.jpg"
 ```
 
-If the constant `IIIF_URL_BASE_URL` is defined then it will form a full url automatically:
+If the base URL is set then it will form a full url automatically:
 
 ```ruby
 IiifUrl.set_base_url("http://example.edu/prefix")
