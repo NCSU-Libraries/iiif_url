@@ -10,6 +10,13 @@ class IiifUrlChainableTest < Minitest::Test
     assert_equal expected, url.to_s
   end
 
+  def test_chainable_identifier
+    url = IiifUrl.new
+    url.identifier('abc')
+    expected = "/abc/full/full/0/default.jpg"
+    assert_equal expected, url.to_s
+  end
+
   def test_chainable_options_with_initial
     url = IiifUrl.new({size: {w: 100}})
     url.format('png')
