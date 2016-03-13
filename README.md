@@ -139,7 +139,7 @@ Even if a base_url is given if there is no identifier, then only the IIIF URL pa
 
 ```ruby
 options = {
-  base_url: "http://example.org/prefix/"
+  base_url: "http://example.org/prefix/",
   size: {pct: 50}
 }
 url = IiifUrl.from_options(options)
@@ -195,10 +195,11 @@ You can also pass in some initial options and then add on others:
 
 ```ruby
 url = IiifUrl.new({size: {w: 100}})
+url.identifier('abc')
 url.format('png')
 url.rotation(180)
 url.to_s
-# => "/full/100,/180/default.png"
+# => "/abc/full/100,/180/default.png"
 ```
 
 ## Parser
@@ -212,6 +213,13 @@ options = IiifUrl.parse("/full/full/0/default.png")
 # => {region: "full", size: "full", rotation: {degrees: 0, mirror: false}, quality: 'default', format: 'png'}
 ```
 
+With an identifier:
+
+```ruby
+options = IiifUrl.parse("/abc/full/full/0/default.png")
+# => {identifier: "abc", region: "full", size: "full", rotation: {degrees: 0, mirror: false}, quality: 'default', format: 'png'}
+```
+
 Parameterized region and size:
 
 ```ruby
@@ -219,13 +227,16 @@ options = IiifUrl.parse("/0,100,200,300/75,/0/default.jpg")
 # => {identifier: nil, region: {x:0, y:100, w: 200, h: 300}, size: {w: 75, h: nil}, rotation: {degrees: 0, mirror: false}, quality: "default", format: "jpg" }
 ```
 
+Parse a full URL:
+
+```ruby
+options = IiifUrl.parse("http://example.org/prefix/abc/0,100,200,300/75,/0/default.jpg")
+# => {identifier: abc, region: {x:0, y:100, w: 200, h: 300}, size: {w: 75, h: nil}, rotation: {degrees: 0, mirror: false}, quality: "default", format: "jpg" }
+```
+
 ## Validation
 
 No validation is done for creating or parsing a URL. This allows for extensions to the IIIF Image API.
-
-## CLI
-
-**TODO: Not yet implemented**
 
 ## Development
 

@@ -8,6 +8,11 @@ class IiifUrl
     @options = options
   end
 
+  def identifier(identifier)
+    @options[:identifier] = identifier
+    self
+  end
+
   def region(region)
     @options[:region] = region
     self
