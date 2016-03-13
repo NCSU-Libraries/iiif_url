@@ -41,6 +41,19 @@ class IiifUrlTest < Minitest::Test
     assert_equal expected, params
   end
 
+  def test_parsing_mirror
+    params = IiifUrl.parse("/full/full/!180/default.png")
+    expected = {
+      identifier: nil,
+      region: "full",
+      size: "full",
+      rotation: {degrees: 180, mirror: true},
+      quality: 'default',
+      format: 'png'
+    }
+    assert_equal expected, params
+  end
+
   def test_parsing_parameterized_path_without_identifier
     params = IiifUrl.parse("/0,100,200,300/75,/0/default.jpg")
     expected = {

@@ -12,8 +12,8 @@ class IiifUrlChainableTest < Minitest::Test
 
   def test_chainable_identifier
     url = IiifUrl.new
-    url.identifier('abc')
-    expected = "/abc/full/full/0/default.jpg"
+    url.identifier('abc').quality('color')
+    expected = "/abc/full/full/0/color.jpg"
     assert_equal expected, url.to_s
   end
 
