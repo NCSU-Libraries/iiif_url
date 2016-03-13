@@ -2,6 +2,8 @@
 
 Create and parse IIIF Image API URLs
 
+![travis build status](https://travis-ci.org/NCSU-Libraries/iiif_url.svg?branch=master)
+
 ## Installation
 
 Add this line to your application's Gemfile:
