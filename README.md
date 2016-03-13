@@ -40,7 +40,7 @@ full_url = File.join(IIIF_BASE_URL, url)
 If the constant `IIIF_URL_BASE_URL` is defined then it will form a full url automatically:
 
 ```ruby
-IIIF_URL_BASE_URL = "http://example.edu/prefix"
+IiifUrl.set_base_url("http://example.edu/prefix")
 options = {
   region: 'full',
   size: 'full',
@@ -52,9 +52,10 @@ url = IiifUrl.from_options(options)
 # => "http://example.edu/prefix/full/full/0/default.jpg"
 ```
 
-You can also pass in the base URL in with the options, which will override any value of `IIIF_URL_BASE_URL`.
+You can also pass in the base URL in with the options, which will override any value set for the base URL.
 
 ```ruby
+IiifUrl.set_base_url("http://example.edu/prefix")
 options = {
   base_url: "http://example.org",
   region: 'full',
@@ -67,10 +68,10 @@ url = IiifUrl.from_options(options)
 # => "http://example.org/full/full/0/default.jpg"
 ```
 
-If IIIF_URL_BASE_URL is set you can prevent it being used and just return the path portion by setting the `base_url` option key to `false`:
+If the base URL is set you can prevent it being used and just return the path portion by setting the `base_url` option key to `false`:
 
 ```ruby
-IIIF_URL_BASE_URL = "http://example.edu/prefix"
+IiifUrl.set_base_url("http://example.edu/prefix")
 options = {
   base_url: false,
   region: 'full',
@@ -148,7 +149,7 @@ There may be cases where you do not have all of the options you need so you want
 url = IiifUrl.new
 url.region({x:100, y:200, w: 300, h: 300})
 url.size({w: 150}).format('png')
-url
+url.to_s
 # => "/100,200,300,300/150,/0/default.png"
 ```
 
@@ -158,7 +159,7 @@ You can also pass in some initial options and then add on others:
 url = IiifUrl.new({size: {w: 100}})
 url.format('png')
 url.rotation(180)
-url
+url.to_s
 # => "/full/100,/180/default.png"
 ```
 
@@ -185,6 +186,10 @@ options = IiifUrl.parse("/0,100,200,300/75,/0/default.jpg")
 ## Validation
 
 No validation is done for creating or parsing a URL. This allows for extensions to the IIIF Image API.
+
+## CLI
+
+**TODO: Not yet implemented**
 
 ## Development
 
