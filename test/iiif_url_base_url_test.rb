@@ -28,5 +28,12 @@ class IiifBaseUrlTest < Minitest::Test
     IiifUrl.set_base_url("")
   end
 
+  def test_getting_base_url
+    expected = "http://example.edu/prefixer"
+    IiifUrl.set_base_url(expected)
+    assert_equal expected, IiifUrl.base_url
+    IiifUrl.set_base_url("")
+  end
+
 
 end

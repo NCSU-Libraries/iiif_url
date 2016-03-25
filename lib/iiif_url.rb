@@ -46,6 +46,10 @@ class IiifUrl
     @@base_url = base_url
   end
 
+  def self.base_url
+    @@base_url
+  end
+
   def self.from_params(params={})
     base_url = params[:base_url]
     if base_url == false
