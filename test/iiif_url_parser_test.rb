@@ -67,6 +67,19 @@ class IiifUrlTest < Minitest::Test
     assert_equal expected, params
   end
 
+  def test_parsing_just_height_size
+    params = IiifUrl.parse("/full/,76/0/default.jpg")
+    expected = {
+      identifier: nil,
+      region: 'full',
+      size: {w: nil, h: 76},
+      rotation: {degrees: 0, mirror: false},
+      quality: "default",
+      format: "jpg"
+    }
+    assert_equal expected, params
+  end
+
   def test_parsing_pcts
     params = IiifUrl.parse("/pct:0,100,200,300/pct:75/0/default.jpg")
     expected = {

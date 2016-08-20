@@ -112,7 +112,11 @@ class IiifUrl
     size_string = url_parts.pop
     size = if size_string.include?(',')
       w, h = size_string.split(',')
-      w = w.to_i if !w.nil?
+      w = if w.empty?
+        nil
+      else
+        w.to_i
+      end
       h = h.to_i if !h.nil?
       {w: w, h: h}
     elsif size_string.include?('pct')
