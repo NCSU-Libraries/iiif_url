@@ -102,11 +102,17 @@ class IiifUrl
     quality, format = quality_format.split('.')
 
     rotation_string = url_parts.pop
-    rotation = if rotation_string.include?('!')
-      degrees = rotation_string.sub('!', '')
-      {degrees: degrees.to_i, mirror: true}
+    rotation = {}
+    rotation[:mirror] = if rotation_string.include?('!')
+      rotation_string.sub!('!', '')
+      true
     else
-      {degrees: rotation_string.to_i, mirror: false}
+      false
+    end
+    rotation[:degrees] = if is_number?(rotation_string)
+      rotation_string.to_i
+    else
+      rotation_string
     end
 
     size_string = url_parts.pop
@@ -157,5 +163,11 @@ class IiifUrl
       quality: quality,
       format: format
     }
+  end
+
+  private
+
+  def self.is_number?(string)
+    true if Float(string) rescue false
   end
 end
