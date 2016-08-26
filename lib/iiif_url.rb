@@ -110,7 +110,12 @@ class IiifUrl
     end
 
     size_string = url_parts.pop
-    size = if size_string.include?(',')
+    size = {}
+    if size_string =~ /^!\d+,\d+/
+      size[:confined] = true
+      size_string.gsub!('!', '')
+    end
+    if size_string.include?(',')
       w, h = size_string.split(',')
       w = if w.empty?
         nil
@@ -118,12 +123,13 @@ class IiifUrl
         w.to_i
       end
       h = h.to_i if !h.nil?
-      {w: w, h: h}
+      size[:w] = w
+      size[:h] = h
     elsif size_string.include?('pct')
-      pct, size = size_string.split(':')
-      {pct: size.to_f}
+      pct, pct_size = size_string.split(':')
+      size[:pct] = pct_size.to_f
     else
-      size_string
+      size = size_string
     end
 
     region_string = url_parts.pop

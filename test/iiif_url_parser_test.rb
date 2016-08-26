@@ -93,4 +93,17 @@ class IiifUrlTest < Minitest::Test
     assert_equal expected, params
   end
 
+  def test_parsing_confined_size
+    params = IiifUrl.parse("/full/!225,100/0/default.jpg")
+    expected = {
+      identifier: nil,
+      region: 'full',
+      size: {w: 225, h:100, confined: true},
+      rotation: {degrees: 0, mirror: false},
+      quality: "default",
+      format: "jpg"
+    }
+    assert_equal expected, params
+  end
+
 end
