@@ -182,4 +182,14 @@ class IiifUrlTest < Minitest::Test
     assert_equal expected, url
   end
 
+  def test_no_width_size
+    params = {
+      identifier: 'asdf',
+      size: {w: 100}
+    }
+    url = IiifUrl.from_params(params)
+    expected = "/asdf/full/100,/0/default.jpg"
+    assert_equal expected, url
+  end
+
 end
